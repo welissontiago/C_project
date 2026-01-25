@@ -24,6 +24,7 @@ public class GaleryService {
     public Galery saveImage(MultipartFile file, User admin) throws IOException {
         Galery image = new Galery();
         image.setData(file.getBytes());
+        image.setContentType(file.getContentType());
         image.setUser(admin);
 
         return galeryRepository.save(image);

@@ -22,12 +22,22 @@ public class Galery {
     @CreationTimestamp
     private Instant  creationTimestamp;
 
+    private String contentType;
+
     public long getImageId() {
         return imageId;
     }
 
     public void setImageId(long imageId) {
         this.imageId = imageId;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
     }
 
     public User getUser() {

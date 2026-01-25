@@ -29,7 +29,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/v1/api/galeria/**").permitAll()
-                        .requestMatchers("/v1/api/galeria/**").hasRole("ADMIN")
+                        .requestMatchers("/v1/api/galeria/**").hasAuthority("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
