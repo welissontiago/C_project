@@ -11,11 +11,14 @@ public class Galery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long imageId;
+    private Long imageId;
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
-    @Column(nullable = false)
-    private String imageUrl;
+
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] data;
+
     @CreationTimestamp
     private Instant  creationTimestamp;
 
@@ -35,19 +38,19 @@ public class Galery {
         this.user = user;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
     public Instant getCreationTimestamp() {
         return creationTimestamp;
     }
 
     public void setCreationTimestamp(Instant creationTimestamp) {
         this.creationTimestamp = creationTimestamp;
+    }
+
+    public byte[] getData() {
+        return data;
+    }
+
+    public void setData(byte[] data) {
+        this.data = data;
     }
 }
