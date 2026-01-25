@@ -28,8 +28,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/galeria/**").permitAll()
-                        .requestMatchers("/galeria/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/v1/api/galeria/**").permitAll()
+                        .requestMatchers("/v1/api/galeria/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
