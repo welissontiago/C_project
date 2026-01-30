@@ -22,15 +22,17 @@ public class DisciplinaService {
     @Autowired
     private GaleryRepository galeryRepository;
 
+    @Transactional(readOnly = true)
     public List<Disciplina> findAll() {
-        return disciplinaRepository.findAll();
+        return disciplinaRepository.findAllWithMateriais();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Disciplina> findById(Long id) {
         return disciplinaRepository.findById(id);
     }
 
-
+    @Transactional(readOnly = true)
     public Optional<Disciplina> findByNome(String nome) {
         return disciplinaRepository.findAll().stream()
                 .filter(d -> d.getNome().equalsIgnoreCase(nome))
