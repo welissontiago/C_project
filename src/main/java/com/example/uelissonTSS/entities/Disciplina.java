@@ -26,7 +26,7 @@ public class Disciplina {
     @JoinColumn(name = "disciplina_id")
     private List<AnexoDisciplina> materiais;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "tb_disciplina_videos", joinColumns = @JoinColumn(name = "disciplina_id"))
     @Column(name = "youtube_url")
     private List<String> videosYoutube;

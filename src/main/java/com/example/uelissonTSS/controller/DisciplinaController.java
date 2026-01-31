@@ -4,8 +4,11 @@ import com.example.uelissonTSS.entities.Disciplina;
 import com.example.uelissonTSS.entities.dto.AnexoResponseDTO;
 import com.example.uelissonTSS.entities.dto.DisciplinaRequestDTO;
 import com.example.uelissonTSS.entities.dto.DisciplinaResponseDTO;
+import com.example.uelissonTSS.repository.AnexoDisciplinaRepository;
 import com.example.uelissonTSS.service.DisciplinaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +21,8 @@ public class DisciplinaController {
 
     @Autowired
     private DisciplinaService disciplinaService;
+    @Autowired
+    private AnexoDisciplinaRepository anexoDisciplinaRepository;
 
     @GetMapping
     public ResponseEntity<List<DisciplinaResponseDTO>> getAll() {
@@ -60,6 +65,16 @@ public class DisciplinaController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/anexos/{id}/download")
+    public ResponseEntity<byte[]> downloadAnexo(@PathVariable Long id) {
+        return anexoDisciplinaRepository.findById(id)
+                .map(anexo -> ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(anexo.getContentType()))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + anexo.getNomeArquivo() + "\"")
+                        .body(anexo.getConteudo()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     private DisciplinaResponseDTO convertToDTO(Disciplina d) {
         return new DisciplinaResponseDTO(
                 d.getDisciplina_ID(),
@@ -68,8 +83,12 @@ public class DisciplinaController {
                 d.getImagemCapa() != null ? d.getImagemCapa().getImageId() : null,
                 d.getVideosYoutube(),
                 d.getMateriais().stream()
-                        .map(a -> new AnexoResponseDTO(a.getId(), a.getNomeArquivo(), a.getTipo().name()))
-                        .collect(Collectors.toList())
-        );
+                        .map(a -> new AnexoResponseDTO(
+                                a.getId(),
+                                a.getNomeArquivo(),
+                                a.getTipo().name(),
+                                java.util.Base64.getEncoder().encodeToString(a.getConteudo())
+                        ))
+                        .collect(Collectors.toList()));
     }
 }

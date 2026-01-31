@@ -13,4 +13,7 @@ public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
 
     @Query("SELECT d FROM Disciplina d LEFT JOIN FETCH d.materiais")
     List<Disciplina> findAllWithMateriais();
+
+    @Query("SELECT d FROM Disciplina d LEFT JOIN FETCH d.materiais WHERE d.Disciplina_ID = :id")
+    Optional<Disciplina> findByIdWithMateriais(Long id);
 }

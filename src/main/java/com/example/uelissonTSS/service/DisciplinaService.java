@@ -29,7 +29,7 @@ public class DisciplinaService {
 
     @Transactional(readOnly = true)
     public Optional<Disciplina> findById(Long id) {
-        return disciplinaRepository.findById(id);
+        return disciplinaRepository.findByIdWithMateriais(id);
     }
 
     @Transactional(readOnly = true)
