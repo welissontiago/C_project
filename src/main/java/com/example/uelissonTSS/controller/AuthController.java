@@ -27,9 +27,7 @@ public class AuthController {
     public ResponseEntity login(@RequestBody @Validated AuthDTO authDTO) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(authDTO.login(), authDTO.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
-
         var token = tokenService.generateToken((User)auth.getPrincipal());
-
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 }
