@@ -15,12 +15,15 @@ public class OutrosConteudos {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    String tema;
-    String local;
-    String data;
+    private String tema;
+    private String local;
+    private String data;
+
+    private String nomeArquivo;
+    private String contentType;
 
     @Enumerated(EnumType.STRING)
-    TipoContent tipo;
+    private TipoContent tipo;
 
     @Lob
     @Column(columnDefinition = "LONGBLOB")
@@ -30,11 +33,12 @@ public class OutrosConteudos {
     public OutrosConteudos() {
     }
 
-    public OutrosConteudos(Long id, String tema, String local, String data, TipoContent tipo, byte[] conteudo) {
-        this.id = id;
+    public OutrosConteudos(String tema, String local, String data, String nomeArquivo, String contentType, TipoContent tipo, byte[] conteudo) {
         this.tema = tema;
         this.local = local;
         this.data = data;
+        this.nomeArquivo = nomeArquivo;
+        this.contentType = contentType;
         this.tipo = tipo;
         this.conteudo = conteudo;
     }
@@ -83,6 +87,22 @@ public class OutrosConteudos {
         this.conteudo = conteudo;
     }
 
+    public String getNomeArquivo() {
+        return nomeArquivo;
+    }
+
+    public void setNomeArquivo(String nomeArquivo) {
+        this.nomeArquivo = nomeArquivo;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof OutrosConteudos that)) return false;
@@ -93,4 +113,6 @@ public class OutrosConteudos {
     public int hashCode() {
         return Objects.hash(getId(), getTema(), getLocal(), getData(), getTipo(), Arrays.hashCode(getConteudo()));
     }
+
+
 }

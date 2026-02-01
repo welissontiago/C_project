@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -50,6 +51,16 @@ public class OutrosConteudosController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/{id}/download")
+    public ResponseEntity<byte[]> downloadArquivo(@PathVariable Long id) {
+        return outrosConteudosService.getContentById(id)
+                .map(content -> ResponseEntity.ok()
+                        .contentType(MediaType.parseMediaType(content.getContentType()))
+                        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + content.getNomeArquivo() + "\"")
+                        .body(content.getConteudo()))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         outrosConteudosService.deleteContent(id);
@@ -63,7 +74,8 @@ public class OutrosConteudosController {
                 entity.getTema(),
                 entity.getLocal(),
                 entity.getData(),
-                entity.getTipo());
+                entity.getTipo(),
+                entity.getNomeArquivo());
     }
 
 }

@@ -25,15 +25,22 @@ public class OutrosConteudosService {
     @Autowired
     private OutrosConteudosRepository outrosConteudosRepository;
 
+    @Transactional
     public OutrosConteudos create(OutrosConteudosDTO dto, MultipartFile file) throws IOException {
         OutrosConteudos outrosConteudos = new OutrosConteudos();
         outrosConteudos.setTema(dto.tema());
         outrosConteudos.setData(dto.data());
         outrosConteudos.setLocal(dto.local());
-        outrosConteudos.setTipo(dto.tipo());;
+        outrosConteudos.setTipo(dto.tipo());
+
+
         outrosConteudos.setConteudo(file.getBytes());
+        outrosConteudos.setNomeArquivo(file.getOriginalFilename());
+        outrosConteudos.setContentType(file.getContentType());
+
         return outrosConteudosRepository.save(outrosConteudos);
     }
+
 
     public Page<OutrosConteudos> getContentsPages(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("creationTimestamp").descending());

@@ -7,6 +7,7 @@ public record OutrosConteudosDTO(
         String tema,
         String local,
         String data,
-        TipoContent tipo
+        TipoContent tipo,
+        String nomeArquivo
 ) {
 }
